@@ -1,0 +1,282 @@
+@import '~@fluentui/react/dist/sass/References.scss';
+
+
+$light-bg: #f9f9f9;
+$card-bg: #ffffff;
+$border: #e0e0e0;
+$text-dark: #1a1a1a;
+$text-muted: #666666;
+
+.wrapper {
+  font-family: 'Segoe UI', sans-serif;
+  background: $light-bg;
+  min-height: 100vh;
+  color: $text-dark;
+}
+
+.banner {
+  background: linear-gradient(135deg, #ffe0b2 0%, #ffccbc 100%);
+  padding: 24px 32px 20px;
+  border-bottom: 3px solid #d04a01;
+}
+
+.bannerSubtitle {
+  font-size: 12px;
+  color: $text-muted;
+  margin: 0 0 6px;
+}
+
+.bannerTitle {
+  font-size: 22px;
+  font-weight: 700;
+  color: $text-dark;
+  margin: 0;
+}
+
+.tabBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffff;
+  padding: 0 32px;
+  border-bottom: 1px solid $border;
+}
+
+.tabs {
+  display: flex;
+  gap: 0;
+}
+
+.tab {
+  background: none;
+  border: none;
+  padding: 14px 20px;
+  font-size: 14px;
+  color: $text-muted;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.activeTab {
+  color: #d04a01;
+  border-bottom: 3px solid #d04a01;
+  font-weight: 600;
+}
+
+.moreIcon {
+  font-size: 20px;
+  color: $text-muted;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.content {
+  padding: 24px 32px;
+}
+
+.topRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.greeting {
+  flex: 1;
+}
+
+.greetingName {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 4px;
+  color: $text-dark;
+}
+
+.greetingSub {
+  font-size: 13px;
+  color: $text-muted;
+  margin: 0;
+}
+
+.stats {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  flex-wrap: nowrap;
+  padding-bottom: 4px;
+
+  // hide scrollbar on IE/Edge but keep functionality
+  -ms-overflow-style: auto;
+  scrollbar-width: thin;
+
+  &::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $light-bg;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #d04a01;
+    border-radius: 4px;
+  }
+}
+
+.statBox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid $border;
+  border-radius: 8px;
+  padding: 14px 20px;
+  min-width: 200px;
+  flex-shrink: 0;
+  transition: border-color 0.2s, background 0.2s;
+
+  &:hover {
+    border-color: #d04a01;
+    background: #fff5f0;
+  }
+}
+
+.activeStatBox {
+  border-color: #d04a01;
+  background: #fff5f0;
+}
+
+
+.statIcon {
+  font-size: 20px;
+  color: #d04a01;
+  display: inline-flex;
+  align-items: center;
+
+}
+
+.statLabel {
+  font-size: 13px;
+  color: $text-muted;
+  flex: 1;
+}
+
+.statCount {
+  font-size: 28px;
+  font-weight: 700;
+  color: $text-dark;
+}
+
+.cardsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 32px;
+
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 500px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  background: $card-bg;
+  border: 1px solid $border;
+  border-radius: 4px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 120px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.2s;
+
+}
+
+.cardTitle {
+  font-size: 13px;
+  // color: #d04a01;
+  margin: 0;
+  line-height: 1.6;
+  flex: 1;
+}
+
+.ticketLink {
+  color: #d04a01;
+  text-decoration: underline;
+  font-style: italic;
+  cursor: pointer;
+}
+
+.cardRequestor {
+  font-size: 12px;
+  color: $text-muted;
+  margin: 0;
+  display: flex;
+  gap: 6px;
+}
+
+.mailIcon {
+  color: #d04a01;
+  font-size: 13px;
+}
+
+.cardCategory {
+  font-size: 12px;
+  color: #d04a01;
+  font-weight: 500;
+  cursor: pointer;
+
+}
+
+.cardFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+.redirectIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  text-decoration: none;
+
+  svg {
+    font-size: 16px;
+  }
+
+}
+
+.navigateRow {
+  display: flex;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.navigateBtn {
+  background: #d04a01;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 28px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  transition: background 0.2s;
+
+  svg {
+    font-size: 20px;
+  }
+
+}

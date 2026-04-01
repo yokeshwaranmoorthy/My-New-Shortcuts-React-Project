@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "new-shortcuts-app-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/newShortcutsApp/NewShortcutsAppWebPart.js",
+          "manifest": "./src/webparts/newShortcutsApp/NewShortcutsAppWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "NewShortcutsAppWebPartStrings": "lib/webparts/newShortcutsApp/loc/{locale}.js"
+  }
+}

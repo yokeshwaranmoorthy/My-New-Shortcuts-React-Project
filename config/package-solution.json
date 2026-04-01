@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "shortcuts-app-client-side-solution",
+    "id": "0eec4e2d-39db-49bb-90bd-1f9b7cc9ecf1",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.20.0"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "shortcuts-app description"
+      },
+      "longDescription": {
+        "default": "shortcuts-app description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "shortcuts-app Feature",
+        "description": "The feature that activates elements of the shortcuts-app solution.",
+        "id": "957a8dc9-9a3a-40f6-8109-2869be229d66",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/shortcuts-app.sppkg"
+  }
+}

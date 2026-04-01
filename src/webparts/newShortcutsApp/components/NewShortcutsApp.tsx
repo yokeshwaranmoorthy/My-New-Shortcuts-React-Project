@@ -10,7 +10,7 @@ import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import { fetchBestTabData } from "./Services/BestApiService";
 
-const BEST_TAB_INDEX = 2;
+const BEST_TAB_INDEX = 2
 const STATIC_TAB_DATA: ITabData[] = [
   {
     label: "Email",

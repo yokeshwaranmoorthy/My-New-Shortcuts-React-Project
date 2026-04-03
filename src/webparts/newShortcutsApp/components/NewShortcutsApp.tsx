@@ -8,9 +8,11 @@ import type {
 } from "./INewShortcutsAppProps";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import { fetchBestTabData } from "./Services/BestApiService";
+import {
+  fetchBestTabData,
+  fetchSalesforceTabData,
+} from "./Services/ApiService";
 
-const BEST_TAB_INDEX = 2
 const STATIC_TAB_DATA: ITabData[] = [
   {
     label: "Email",
@@ -78,7 +80,8 @@ const STATIC_TAB_DATA: ITabData[] = [
       { label: "Approval Pending", count: 10 },
     ],
     navigateLabel: "Navigate to Precision",
-    navigateUrl: "https://pwcnetwork.service-now.com/hub",
+    navigateUrl:
+      "https://fa-eqad-saasfaprod1.fa.ocs.oraclecloud.com/fscmUI/faces/FuseWelcome?_adf.ctrl-state=2mjylxbe2_1&_adf.no-new-window-redirect=true&_afrLoop=59403678975127533&_afrWindowMode=2&_afrWindowId=null&_afrFS=16&_afrMT=screen&_afrMFW=1528&_afrMFH=794&_afrMFDW=1536&_afrMFDH=960&_afrMFC=8&_afrMFCI=0&_afrMFM=0&_afrMFR=120&_afrMFG=0&_afrMFS=0&_afrMFO=0",
     items: [
       {
         id: "6",
@@ -131,64 +134,15 @@ const STATIC_TAB_DATA: ITabData[] = [
     label: "Best",
     statusCounts: [],
     navigateLabel: "Navigate to Best",
-    navigateUrl: "",
+    navigateUrl: "https://bestportal.in.pwc.com/",
     items: [],
   },
   {
     label: "Salesforce",
-    statusCounts: [
-      { label: "Approval Completed", count: 18 },
-      { label: "Approval Pending", count: 7 },
-    ],
+    statusCounts: [],
     navigateLabel: "Navigate to Salesforce",
-    navigateUrl: "",
-    items: [
-      {
-        id: "16",
-        ticketNumber: "RITM13456975",
-        description: "Salesforce permission update request.",
-        requestor: "Arjun Menon",
-        category: "Sales",
-        status: "",
-        url: "https://www.google.com/",
-      },
-      {
-        id: "17",
-        ticketNumber: "RITM13456975",
-        description: "Salesforce permission update request.",
-        requestor: "Arjun Menon",
-        category: "Sales",
-        status: "",
-        url: "https://www.google.com/",
-      },
-      {
-        id: "18",
-        ticketNumber: "RITM13456975",
-        description: "Salesforce permission update request.",
-        requestor: "Arjun Menon",
-        category: "Sales",
-        status: "",
-        url: "https://www.google.com/",
-      },
-      {
-        id: "19",
-        ticketNumber: "RITM13456975",
-        description: "Salesforce permission update request.",
-        requestor: "Arjun Menon",
-        category: "Sales",
-        status: "",
-        url: "https://www.google.com/",
-      },
-      {
-        id: "20",
-        ticketNumber: "RITM13456975",
-        description: "Salesforce permission update request.",
-        requestor: "Arjun Menon",
-        category: "Sales",
-        status: "",
-        url: "https://www.google.com/",
-      },
-    ],
+    navigateUrl: "https://pwc.lightning.force.com/lightning/page/home",
+    items: [],
   },
 ];
 
@@ -196,7 +150,9 @@ const ShortcutCard: React.FC<{ item: IShortcutItem }> = ({ item }) => (
   <div className={styles.card}>
     <p className={styles.cardTitle}>
       <span className={styles.ticketLink}>{item.ticketNumber}</span>
-      {item.description ? <span>{` - ${item.description}`}</span> : null}
+      {item.description ? (
+        <span dangerouslySetInnerHTML={{ __html: ` ${item.description}` }} />
+      ) : null}
     </p>
     <p className={styles.cardRequestor}>
       <span className={styles.mailIcon}>✉</span>
@@ -204,7 +160,6 @@ const ShortcutCard: React.FC<{ item: IShortcutItem }> = ({ item }) => (
     </p>
     <div className={styles.cardFooter}>
       <span className={styles.cardCategory}>{item.category}</span>
-      {/* {item.status ? <span className={styles.cardCategory}>{item.status}</span> : null} */}
       {item.url ? (
         <a
           href={item.url}
@@ -250,58 +205,118 @@ const NewShortcutsApp: React.FC<INewShortcutsAppProps> = ({
   const [selectedStatus, setSelectedStatus] = React.useState<string | null>(
     null,
   );
-  const hardcodeemails = "khushboo.x.gupta@pwc.com";
+  //const hardcodebestemails = "khushboo.x.gupta@pwc.com";
 
   // ── API call using async/await ──────────────────────────────────────────────
-  const loadBestTabData = async (email: string): Promise<void> => {
-    setLoading(true);
-    setError(null);
+  const loadBestTabData = React.useCallback(
+    async (email: string): Promise<void> => {
+      setLoading(true);
+      setError(null);
 
-    try {
-      const result = await fetchBestTabData(hardcodeemails);
+      try {
+        const result = await fetchBestTabData(email);
+        console.log("Best API result:", result);
+        console.log("Items:", result.items);
+        console.log("StatusCounts:", result.statusCounts);
 
-      if (result.items.length > 0) {
-        setTabData((prev) =>
-          prev.map((tab, i) =>
-            i === BEST_TAB_INDEX
-              ? {
-                  ...tab,
-                  items: result.items,
-                  statusCounts: result.statusCounts,
-                }
-              : tab,
-          ),
-        );
-        // auto-select the first status as default filter
-        if (result.statusCounts.length > 0) {
-          setSelectedStatus(result.statusCounts[0].label);
+        if (result?.items?.length > 0) {
+          setTabData((prev) =>
+            prev.map((tab) =>
+              tab.label === "Best"
+                ? {
+                    ...tab,
+                    items: result?.items,
+                    statusCounts: result?.statusCounts,
+                  }
+                : tab,
+            ),
+          );
+
+          if (result?.statusCounts?.length > 0) {
+            setSelectedStatus(result?.statusCounts?.[0]?.label);
+          }
+        } else {
+          setError("No records found.");
         }
-      } else {
-        setError("No records found.");
+      } catch (err) {
+        console.log("API Error:", err);
+        setError(
+          err instanceof Error ? err.message : "An unexpected error occurred.",
+        );
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      setError((err as Error).message);
-    } finally {
-      setLoading(false);
-    }
-  };
+    },
+    [],
+  );
+
+  const loadSalesforceTabData = React.useCallback(
+    async (email: string): Promise<void> => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const result = await fetchSalesforceTabData(email);
+        console.log("resultresultresult", result);
+
+        if (result?.items?.length > 0) {
+          setTabData((prev) =>
+            prev.map((tab) =>
+              tab.label === "Salesforce"
+                ? {
+                    ...tab,
+                    items: result?.items,
+                    statusCounts: result?.statusCounts,
+                  }
+                : tab,
+            ),
+          );
+        } else {
+          setError("No records found.");
+        }
+      } catch (err) {
+        setError(
+          err instanceof Error ? err.message : "An unexpected error occurred.",
+        );
+      } finally {
+        setLoading(false);
+      }
+    },
+    [],
+  );
 
   React.useEffect(() => {
     setSelectedStatus(null);
-    if (activeTab === BEST_TAB_INDEX) {
-      // const storedEmail = localStorage.getItem("MyShortcutsEmail");
-      // const emailToUse = storedEmail === "khushboo.x.gupta@pwc.com" ? storedEmail : userEmail;
+    setError(null);
+
+    // Clear stale API tab data so fresh data always loads on return
+    setTabData((prev) =>
+      prev.map((tab) =>
+        tab.label === "Best" || tab.label === "Salesforce"
+          ? { ...tab, items: [], statusCounts: [] }
+          : tab,
+      ),
+    );
+
+    // Use STATIC_TAB_DATA to read the label — avoids re-triggering when tabData state updates
+    const currentLabel = STATIC_TAB_DATA[activeTab]?.label;
+    console.log("currentLabel", currentLabel);
+
+    if (currentLabel === "Best") {
       loadBestTabData(userEmail).catch(() => {
-        /* handled inside */
+      });
+    } else if (currentLabel === "Salesforce") {
+      loadSalesforceTabData(userEmail).catch(() => {
       });
     }
-  }, [activeTab]);
+    // Precision uses static data — no API call needed
+  }, [activeTab, userEmail]);
 
-  const currentTab = tabData[activeTab];
+  const currentTab = tabData?.[activeTab];
   const visibleItems =
-    activeTab === BEST_TAB_INDEX && selectedStatus
-      ? currentTab.items.filter((item) => item.status === selectedStatus)
-      : currentTab.items;
+    currentTab?.label === "Best" && selectedStatus
+      ? currentTab?.items?.filter((item) => item?.status === selectedStatus)
+      : (currentTab?.items ?? []);
 
   return (
     <div className={styles.wrapper}>
@@ -334,7 +349,7 @@ const NewShortcutsApp: React.FC<INewShortcutsAppProps> = ({
           </div>
           <div className={styles.stats}>
             {!loading &&
-              currentTab.statusCounts.map((sc: IStatusCount) => (
+              currentTab?.statusCounts?.map((sc: IStatusCount) => (
                 <StatBox
                   key={sc.label}
                   label={sc.label}
@@ -346,49 +361,51 @@ const NewShortcutsApp: React.FC<INewShortcutsAppProps> = ({
           </div>
         </div>
 
-        {activeTab === BEST_TAB_INDEX && loading && (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              padding: "40px 0",
-            }}
-          >
-            <p>Loading...</p>
-          </div>
-        )}
-        {activeTab === BEST_TAB_INDEX && error && (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              padding: "40px 0",
-            }}
-          >
-            <p style={{ color: "black" }}>{error}</p>
-          </div>
-        )}
+        {(currentTab?.label === "Best" || currentTab?.label === "Salesforce") &&
+          loading && (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                padding: "40px 0",
+              }}
+            >
+              <p>Loading...</p>
+            </div>
+          )}
+        {(currentTab?.label === "Best" || currentTab?.label === "Salesforce") &&
+          error && (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                padding: "40px 0",
+              }}
+            >
+              <p style={{ color: "black" }}>{error}</p>
+            </div>
+          )}
 
-        {(!loading && !error) || activeTab !== BEST_TAB_INDEX ? (
+        {(currentTab?.label !== "Best" && currentTab?.label !== "Salesforce") || (!loading && !error) ? (
           <div className={styles.cardsGrid}>
-            {visibleItems.map((item: IShortcutItem) => (
-              <ShortcutCard key={item.id} item={item} />
+            {visibleItems?.map((item: IShortcutItem) => (
+              <ShortcutCard key={item?.id} item={item} />
             ))}
           </div>
         ) : null}
 
         <div className={styles.navigateRow}>
-          {currentTab.label === "Precision" && (
+          {currentTab?.navigateUrl && (
             <a
-              href={currentTab.navigateUrl}
+              href={currentTab?.navigateUrl}
               target="_blank"
               rel="noopener noreferrer"
               className={styles.navigateBtn}
             >
               <OpenInNewIcon />
-              {currentTab.navigateLabel}
+              {currentTab?.navigateLabel}
             </a>
           )}
         </div>

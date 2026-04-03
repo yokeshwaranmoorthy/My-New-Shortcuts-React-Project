@@ -53,7 +53,7 @@ export function fetchBestTabData(userEmail: string): Promise<ITabResult> {
     .then((response: Response) => {
       if (!response.ok) {
         throw new Error(
-          `BES API error: ${response.status} ${response.statusText}`,
+          `BEST API error: ${response.status} ${response.statusText}`,
         );
       }
       return response.json();

@@ -9,11 +9,11 @@ export interface INewShortcutsAppProps {
 
 export interface IShortcutItem {
   id: string;
-  ticketNumber: string;   // REQUEST_ID
-  description: string;    // SHORT_DESCRIPTION
-  requestor: string;      // RAISED_BY
-  category: string;       // REQUEST_TYPE
-  status: string;         // REQUEST_STATUS
+  ticketNumber: string; // REQUEST_ID
+  description: string; // SHORT_DESCRIPTION
+  requestor: string; // RAISED_BY
+  category: string; // REQUEST_TYPE
+  status: string; // REQUEST_STATUS
   url: string;
 }
 
